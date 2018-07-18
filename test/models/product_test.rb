@@ -53,4 +53,15 @@ class ProductTest < ActiveSupport::TestCase
     assert_equal [I18n.translate('errors.messages.taken')], product.errors[:title]
   end
 
+  test "product title must be ten characters" do
+    product = Product.new(price: 1.0,
+       description: "yyy", image_url: "zzz.jpg")
+    product.title = '1'
+    assert product.invalid?
+    assert_equal ["is too short (minimum is 10 characters)"], product.errors[:title]
+    product.title  = '0123456789'
+
+    assert product.valid?
+  end
+
 end
